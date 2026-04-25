@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 3: H/M/Y/R/W + ん · Pack 1 Hiragana · 2izzo/nihongo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap">
+  <link rel="stylesheet" href="shared/style.css">
+</head>
+<body>
+  <main class="container" id="lesson-root"></main>
+
+  <script src="shared/kana-data.js"></script>
+  <script src="shared/lesson-engine.js"></script>
+  <script>
+    const lesson3Kana = KANA_DATA.filter(k => k.lesson === 3);
+    const lesson3DrillPool = KANA_DATA.filter(k => k.lesson <= 3);
+
+    Lesson.init({
+      number: 3,
+      title: 'H, M, Y, R, W rows + ん',
+      intro: 'The last 21 base hiragana. After this lesson, you can sound out any pure-hiragana word. Two oddballs to flag: ふ is "fu" but pronounced with both lips (between English F and H), and を is read like "o" — it exists almost exclusively as a grammar particle (more on that in Pack 3).',
+      kana: lesson3Kana,
+      sections: [
+        {
+          title: 'The standalone consonant: ん',
+          html: '<div class="note"><strong>ん</strong> is the only kana that&apos;s a single consonant — no vowel attached. It can&apos;t start a word, but it ends a lot of them: <em>ほん</em> (book), <em>でん</em>わ (phone), <em>に</em>ほ<em>ん</em> (Japan). When you type Japanese on a computer, you usually type <code>nn</code> to commit it (the drill accepts both <code>n</code> and <code>nn</code>).</div>',
+        },
+        {
+          title: 'を vs お',
+          html: '<p>Two kana for the same sound. <strong>お</strong> is the everyday "o" — used in regular words. <strong>を</strong> is reserved for marking the direct object in a sentence (Pack 3 territory). When you see を, expect a verb nearby acting on whatever came before it.</p>',
+        },
+      ],
+      miniDrillPool: lesson3DrillPool,
+      miniDrill: { count: 15, label: 'Quick drill (15 prompts across all 46 base kana)' },
+      quizPool: lesson3DrillPool,
+      quiz: {
+        count: 5,
+        passing: 4,
+        passMsg: 'All 46 base kana — done. Lesson 4 layers on the tweaks: voiced consonants (dakuten) and consonant-yodda combinations (yōon). After that, you can read every word in Japanese that&apos;s written purely in hiragana.',
+      },
+      prevLesson: '02-s-t-n.html',
+      nextLesson: '04-dakuten-yoon-quiz.html',
+    });
+  </script>
+</body>
+</html>

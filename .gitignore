@@ -1,0 +1,22 @@
+# OS noise
+.DS_Store
+Thumbs.db
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Node (if any future tooling adds it)
+node_modules/
+package-lock.json
+
+# Temp / build artifacts
+*.tmp
+*.bak
+.cache/
+
+# Local-only / never commit
+.env
+.secrets/

@@ -1,0 +1,388 @@
+/* nihongo Pack 1 — shared styles
+   Mobile-first. Neutral palette. Noto Sans JP for kana. */
+
+:root {
+  --bg:           #f7f5f0;
+  --surface:      #ffffff;
+  --surface-alt:  #efebe2;
+  --ink:          #1f1d1a;
+  --ink-soft:     #5a564f;
+  --ink-faint:    #9a958a;
+  --accent:       #c2410c;       /* warm rust — same family as the music studio */
+  --accent-soft:  #fed7aa;
+  --good:         #15803d;
+  --good-soft:    #bbf7d0;
+  --bad:          #b91c1c;
+  --bad-soft:     #fecaca;
+  --warn:         #a16207;
+  --warn-soft:    #fef3c7;
+  --line:         #d6d1c4;
+  --radius:       10px;
+  --shadow:       0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04);
+  --font-ui:      'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-jp:      'Noto Sans JP', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-ui);
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+.container {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 4rem;
+}
+
+/* ── Header ────────────────────────────────────────────────────── */
+.lesson-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 1.5rem;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.lesson-header .pack-tag {
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 600;
+}
+.lesson-header a { color: var(--ink-soft); text-decoration: none; font-size: 0.9rem; }
+.lesson-header a:hover { color: var(--accent); }
+
+h1 {
+  font-size: 1.8rem;
+  margin: 0.2rem 0 0.6rem;
+  font-weight: 700;
+}
+h2 {
+  font-size: 1.3rem;
+  margin-top: 2.2rem;
+  margin-bottom: 0.8rem;
+  font-weight: 600;
+}
+h3 { font-size: 1.05rem; margin-top: 1.4rem; font-weight: 600; }
+
+p { margin: 0.6rem 0; color: var(--ink-soft); }
+p.intro { color: var(--ink); font-size: 1.05rem; }
+
+/* ── Kana grid ────────────────────────────────────────────────── */
+.kana-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 0.9rem;
+  margin: 1rem 0 1.5rem;
+}
+.kana-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 0.9rem;
+  text-align: center;
+  position: relative;
+  box-shadow: var(--shadow);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+.kana-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08), 0 8px 18px rgba(0,0,0,0.06);
+}
+.kana-card.irregular {
+  border-color: var(--warn);
+  background: linear-gradient(180deg, var(--surface) 0%, var(--warn-soft) 100%);
+}
+.kana-card .glyph {
+  font-family: var(--font-jp);
+  font-size: 3.2rem;
+  font-weight: 500;
+  line-height: 1;
+  margin: 0.2rem 0 0.4rem;
+  color: var(--ink);
+}
+.kana-card .romaji {
+  font-size: 1.05rem;
+  color: var(--accent);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+.kana-card .mnemonic {
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+  margin-top: 0.5rem;
+  min-height: 2.4em;
+  font-style: italic;
+}
+.kana-card .audio-btn {
+  margin-top: 0.6rem;
+  background: var(--surface-alt);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.35rem 0.9rem;
+  font-size: 0.82rem;
+  cursor: pointer;
+  font-family: var(--font-ui);
+  color: var(--ink);
+  transition: background 0.12s, border-color 0.12s;
+}
+.kana-card .audio-btn:hover {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
+.kana-card .audio-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.kana-card .irregular-flag {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  font-size: 0.65rem;
+  background: var(--warn);
+  color: #fff;
+  padding: 0.1rem 0.45rem;
+  border-radius: 999px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+/* ── Drill / quiz ─────────────────────────────────────────────── */
+.drill, .quiz {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1.2rem;
+  margin: 1rem 0;
+  box-shadow: var(--shadow);
+}
+.drill .prompt-glyph,
+.quiz .prompt-glyph {
+  font-family: var(--font-jp);
+  font-size: 4rem;
+  font-weight: 500;
+  text-align: center;
+  margin: 0.6rem 0 1rem;
+  color: var(--ink);
+  line-height: 1;
+}
+.drill input[type=text],
+.quiz input[type=text] {
+  width: 100%;
+  padding: 0.7rem 0.9rem;
+  font-size: 1.1rem;
+  font-family: var(--font-ui);
+  border: 2px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--bg);
+  text-align: center;
+  letter-spacing: 0.06em;
+  color: var(--ink);
+}
+.drill input:focus,
+.quiz input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+.drill input.correct,
+.quiz input.correct {
+  border-color: var(--good);
+  background: var(--good-soft);
+}
+.drill input.wrong,
+.quiz input.wrong {
+  border-color: var(--bad);
+  background: var(--bad-soft);
+}
+
+.drill-progress, .quiz-progress {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.02em;
+}
+.drill-feedback, .quiz-feedback {
+  margin-top: 0.7rem;
+  text-align: center;
+  font-size: 0.95rem;
+  min-height: 1.4em;
+  color: var(--ink-soft);
+}
+.drill-feedback.correct, .quiz-feedback.correct { color: var(--good); }
+.drill-feedback.wrong,   .quiz-feedback.wrong   { color: var(--bad); }
+
+button.primary {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius);
+  padding: 0.7rem 1.3rem;
+  font-family: var(--font-ui);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 0.7rem;
+  transition: opacity 0.12s, transform 0.12s;
+}
+button.primary:hover { opacity: 0.92; }
+button.primary:active { transform: translateY(1px); }
+button.primary:disabled { opacity: 0.45; cursor: not-allowed; }
+
+/* ── Quiz result badge ─────────────────────────────────────────── */
+.result-badge {
+  display: inline-block;
+  padding: 0.6rem 1.2rem;
+  border-radius: var(--radius);
+  font-weight: 600;
+  margin-top: 0.8rem;
+}
+.result-badge.passed {
+  background: var(--good-soft);
+  color: var(--good);
+  border: 1px solid var(--good);
+}
+.result-badge.failed {
+  background: var(--bad-soft);
+  color: var(--bad);
+  border: 1px solid var(--bad);
+}
+
+/* ── Reading drill (Lesson 4) ─────────────────────────────────── */
+.reading-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.7rem;
+}
+.reading-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 0.9rem;
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  text-align: center;
+  user-select: none;
+  transition: background 0.12s;
+}
+.reading-card:hover { background: var(--surface-alt); }
+.reading-card .word {
+  font-family: var(--font-jp);
+  font-size: 1.8rem;
+  font-weight: 500;
+  margin-bottom: 0.4rem;
+}
+.reading-card .reveal {
+  font-size: 0.8rem;
+  color: var(--ink-faint);
+  margin-top: 0.3rem;
+}
+.reading-card.revealed .reveal { display: none; }
+.reading-card .answer {
+  display: none;
+  margin-top: 0.4rem;
+}
+.reading-card.revealed .answer { display: block; }
+.reading-card .answer .romaji-text {
+  color: var(--accent);
+  font-weight: 600;
+}
+.reading-card .answer .meaning-text {
+  color: var(--ink-soft);
+  font-size: 0.88rem;
+  margin-top: 0.2rem;
+}
+
+/* ── Pack & root index pages ──────────────────────────────────── */
+.lesson-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+.lesson-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1.2rem;
+  box-shadow: var(--shadow);
+  text-decoration: none;
+  color: var(--ink);
+  display: block;
+  transition: transform 0.12s, box-shadow 0.12s;
+}
+.lesson-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08), 0 8px 20px rgba(0,0,0,0.07);
+  border-color: var(--accent);
+}
+.lesson-card .num {
+  font-size: 0.78rem;
+  color: var(--accent);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.lesson-card .title {
+  font-size: 1.15rem;
+  margin: 0.3rem 0;
+  font-weight: 600;
+}
+.lesson-card .meta {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+.lesson-card .start {
+  display: inline-block;
+  margin-top: 0.7rem;
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+/* ── Footer / next link ───────────────────────────────────────── */
+.lesson-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--line);
+  margin-top: 2.2rem;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+.lesson-footer a {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+.lesson-footer a:hover { text-decoration: underline; }
+
+/* ── Notes / callouts ─────────────────────────────────────────── */
+.note {
+  background: var(--warn-soft);
+  border-left: 3px solid var(--warn);
+  padding: 0.7rem 0.9rem;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  margin: 1rem 0;
+  font-size: 0.9rem;
+  color: var(--ink);
+}
+.note strong { color: var(--warn); }
+
+/* ── Responsive tweaks ────────────────────────────────────────── */
+@media (max-width: 540px) {
+  h1 { font-size: 1.5rem; }
+  .kana-card .glyph { font-size: 2.6rem; }
+  .container { padding: 1rem 0.7rem 3rem; }
+}

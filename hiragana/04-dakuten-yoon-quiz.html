@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 4: Dakuten, Yōon & Reading Drill · Pack 1 Hiragana · 2izzo/nihongo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap">
+  <link rel="stylesheet" href="shared/style.css">
+</head>
+<body>
+  <main class="container" id="lesson-root"></main>
+
+  <script src="shared/kana-data.js"></script>
+  <script src="shared/lesson-engine.js"></script>
+  <script>
+    // Lesson 4 is two passes: dakuten/handakuten first, then yōon.
+    // We render both groups inline using the engine's kana grid + a custom intro.
+    // The quiz pulls from ALL hiragana (lessons 1-4) — full Pack 1 mix.
+    const dakutenKana = KANA_DATA.filter(k => k.lesson === 4 && k.row !== 'yoon');
+    const yoonKana    = KANA_DATA.filter(k => k.row === 'yoon');
+    const allKana     = KANA_DATA;  // full mix for the final quiz
+
+    Lesson.init({
+      number: 4,
+      title: 'Dakuten, Yōon & Reading',
+      intro: 'Two final patterns to unlock the rest of hiragana. Dakuten (the small " mark) voices a consonant — か becomes が, さ becomes ざ. Handakuten (the small ° mark, only on the H-row) turns H into P — は becomes ぱ. Yōon are combinations: a regular kana plus a small ゃ, ゅ, or ょ — き + ゃ becomes きゃ ("kya"), one syllable.',
+      kana: dakutenKana,
+      sections: [
+        {
+          title: 'Yōon — the small-y combinations',
+          html: '<p>Wherever you see a small ゃ, ゅ, or ょ tucked next to another kana, treat them as one syllable. <strong>きょ</strong> is "kyo" (one beat), not "ki-yo" (two beats). The full set:</p>' + (function() {
+            // Inline render the yōon grid because the engine renders only `config.kana`.
+            const cards = yoonKana.map(k => `
+              <div class="kana-card${k.irregular ? ' irregular' : ''}">
+                ${k.irregular ? '<span class="irregular-flag">irregular</span>' : ''}
+                <div class="glyph">${k.kana}</div>
+                <div class="romaji">${k.romaji}</div>
+                <div class="mnemonic">${k.mnemonic || ''}</div>
+                <button class="audio-btn" type="button" onclick="(function(r){var a=new Audio('audio/'+r+'.mp3');a.play().catch(function(){});})('${k.romaji}')">▶  hear it</button>
+              </div>
+            `).join('');
+            return `<div class="kana-grid">${cards}</div>`;
+          })(),
+        },
+        {
+          title: 'Long vowels & small つ',
+          html: `<div class="note"><strong>Long vowels:</strong> Two vowels in a row usually mean "hold the first one longer." <em>おう</em> reads as <em>ō</em>, <em>えい</em> often reads as <em>ē</em>. Example: <strong>がっこう</strong> (school) is "gakkō," not "gakkou." <br><br><strong>Small っ (sokuon):</strong> A small つ doesn&apos;t make a sound — it doubles the next consonant. <strong>がっこう</strong> = "gak-kō" with a quick stop before the K. You'll see this constantly.</div>`,
+        },
+      ],
+      readingDrill: READING_DRILL,
+      quizPool: allKana,
+      quiz: {
+        count: 10,
+        passing: 7,
+        passMsg: 'Pack 1 complete. You can read all of hiragana — base, dakuten, yōon, the irregulars, and the long-vowel rule. Pack 2 (katakana) reuses everything you just learned: same vowel structure, same consonant rows, just different shapes.',
+      },
+      prevLesson: '03-h-m-y-r-w-n.html',
+      nextLesson: 'index.html',
+    });
+  </script>
+</body>
+</html>

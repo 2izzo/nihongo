@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pack 1: Hiragana · 2izzo/nihongo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap">
+  <link rel="stylesheet" href="shared/style.css">
+</head>
+<body>
+  <main class="container">
+    <div class="lesson-header">
+      <div>
+        <div class="pack-tag">Pack 1</div>
+        <h1>Hiragana</h1>
+      </div>
+      <a href="../index.html">← all packs</a>
+    </div>
+
+    <p class="intro">
+      Four lessons take you from zero hiragana to reading every kana — all 46 base characters, the 25 voiced (dakuten/handakuten) variants, and 33 yōon combinations. Each lesson runs about 15-20 minutes. Audio is provided for every kana via your ElevenLabs ja-JP voice.
+    </p>
+
+    <p>
+      The order is structural, not arbitrary. Lesson 1 teaches the five vowels — every other row is built on them. Lessons 2 and 3 finish the base set in two passes. Lesson 4 layers on the variants and ends with a reading drill on real Japanese words. Pack 2 (katakana, coming next) reuses everything you learn here.
+    </p>
+
+    <div class="lesson-cards">
+      <a class="lesson-card" href="01-vowels-and-k.html">
+        <div class="num">Lesson 1</div>
+        <div class="title">Vowels &amp; K-row</div>
+        <div class="meta">10 kana · ~15 min</div>
+        <div class="start">Start →</div>
+      </a>
+      <a class="lesson-card" href="02-s-t-n.html">
+        <div class="num">Lesson 2</div>
+        <div class="title">S, T, N rows</div>
+        <div class="meta">15 kana · ~18 min · 3 irregulars</div>
+        <div class="start">Start →</div>
+      </a>
+      <a class="lesson-card" href="03-h-m-y-r-w-n.html">
+        <div class="num">Lesson 3</div>
+        <div class="title">H, M, Y, R, W rows + ん</div>
+        <div class="meta">21 kana · ~20 min · all 46 base done</div>
+        <div class="start">Start →</div>
+      </a>
+      <a class="lesson-card" href="04-dakuten-yoon-quiz.html">
+        <div class="num">Lesson 4</div>
+        <div class="title">Dakuten, Yōon &amp; Reading</div>
+        <div class="meta">25 dakuten + 33 yōon · ~25 min · reading drill + final quiz</div>
+        <div class="start">Start →</div>
+      </a>
+    </div>
+
+    <div class="note">
+      <strong>Audio note:</strong> The hear-it buttons rely on MP3 files generated from your ElevenLabs ja-JP voice. If you haven&apos;t run <code>scripts/generate-audio.mjs</code> yet, the buttons will silently fail — the lessons still work without audio, you just lose the pronunciation reference. See the repo README for the build steps.
+    </div>
+
+    <p style="margin-top:2rem; color:var(--ink-faint); font-size:0.85rem;">
+      Built solo by Rizzo &amp; Squibs · 2026 · part of the <a href="../index.html" style="color:var(--accent); text-decoration:none;">2izzo/nihongo</a> series.
+    </p>
+  </main>
+</body>
+</html>

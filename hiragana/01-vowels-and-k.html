@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 1: Vowels & K-row · Pack 1 Hiragana · 2izzo/nihongo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap">
+  <link rel="stylesheet" href="shared/style.css">
+</head>
+<body>
+  <main class="container" id="lesson-root"></main>
+
+  <script src="shared/kana-data.js"></script>
+  <script src="shared/lesson-engine.js"></script>
+  <script>
+    const lesson1Kana = KANA_DATA.filter(k => k.lesson === 1);
+
+    Lesson.init({
+      number: 1,
+      title: 'Vowels & K-row',
+      intro: 'Ten kana to start. Five vowels first — every Japanese sound is built on these. Then the K-row, which is just the vowels with a "k-" stuck in front. Read the cards, click "hear it" to play the audio, then run the drill at the bottom.',
+      kana: lesson1Kana,
+      sections: [
+        {
+          title: 'The trick',
+          html: '<p>Japanese is a syllable language, not a letter language. There&apos;s no separate "k" — k always comes attached to a vowel. Once you know the five vowels, you can decode the K-row instantly: <strong>ka, ki, ku, ke, ko</strong>. The same pattern repeats for S, T, N, H, M, R, and W rows in the next lessons.</p><div class="note"><strong>About audio:</strong> If the audio buttons don&apos;t play, the MP3 files haven&apos;t been generated yet. They&apos;re built once via <code>scripts/generate-audio.mjs</code> using ElevenLabs. The cards still teach without audio — you can read mnemonics and use the drill.</div>',
+        },
+      ],
+      miniDrill: { count: 8, label: 'Quick drill (8 prompts)' },
+      quiz: {
+        count: 5,
+        passing: 4,
+        passMsg: 'Solid. The vowels and K-row are the spine of every other row. Lesson 2 stacks S, T, and N on top.',
+      },
+      prevLesson: null,
+      nextLesson: '02-s-t-n.html',
+    });
+  </script>
+</body>
+</html>

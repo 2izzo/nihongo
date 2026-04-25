@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 2: S/T/N rows · Pack 1 Hiragana · 2izzo/nihongo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap">
+  <link rel="stylesheet" href="shared/style.css">
+</head>
+<body>
+  <main class="container" id="lesson-root"></main>
+
+  <script src="shared/kana-data.js"></script>
+  <script src="shared/lesson-engine.js"></script>
+  <script>
+    const lesson2Kana = KANA_DATA.filter(k => k.lesson === 2);
+    // Mini-drill mixes Lesson 1 + 2 kana so old material stays fresh.
+    const lesson2DrillPool = KANA_DATA.filter(k => k.lesson <= 2);
+
+    Lesson.init({
+      number: 2,
+      title: 'S, T, N rows',
+      intro: 'Fifteen new kana. Three of them break the pattern — し is "shi" not "si", ち is "chi" not "ti", つ is "tsu" not "tu". They&apos;re marked with the orange "irregular" tag. Memorize those three carefully; they show up everywhere.',
+      kana: lesson2Kana,
+      sections: [
+        {
+          title: 'The three irregulars',
+          html: '<div class="note"><strong>し / ち / つ</strong> don&apos;t follow the consonant-pattern. They&apos;re older sound shifts that English-speakers tend to overcorrect. The drill accepts both Hepburn (<em>shi, chi, tsu</em>) and Nihon-shiki (<em>si, ti, tu</em>) but Hepburn is what you&apos;ll see everywhere outside of Japanese-government documents.</div>',
+        },
+      ],
+      miniDrillPool: lesson2DrillPool,
+      miniDrill: { count: 12, label: 'Quick drill (12 prompts, mixing L1 + L2)' },
+      quizPool: lesson2DrillPool,
+      quiz: {
+        count: 5,
+        passing: 4,
+        passMsg: 'Half the base hiragana down. Lesson 3 finishes the rest in one stretch.',
+      },
+      prevLesson: '01-vowels-and-k.html',
+      nextLesson: '03-h-m-y-r-w-n.html',
+    });
+  </script>
+</body>
+</html>
