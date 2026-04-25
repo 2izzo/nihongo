@@ -74,9 +74,18 @@
     n:    ['n', 'nn'],   // ん can be typed 'n' or 'nn'
   };
 
-  function answerMatches(input, expected) {
+  // Match either:
+  //   - romaji input (e.g., "ka" → か) — standard QWERTY romaji typing
+  //   - kana input  (e.g., か → か)    — JIS kana keyboard typing direct
+  // The expected value in KANA_DATA is romaji, but Squibs may type the kana
+  // directly in kana-input mode. Either is correct.
+  function answerMatches(input, expectedRomaji, expectedKana) {
     const normalized = normalizeAnswer(input);
-    const aliases = ROMAJI_ALIASES[expected] || [expected];
+    if (!normalized) return false;
+    // Direct kana match (kana-input typists)
+    if (expectedKana && input.trim() === expectedKana) return true;
+    // Romaji match with aliases (romaji-input typists)
+    const aliases = ROMAJI_ALIASES[expectedRomaji] || [expectedRomaji];
     return aliases.some(a => normalizeAnswer(a) === normalized);
   }
 
@@ -108,9 +117,15 @@
         class: 'audio-btn',
         type: 'button',
         title: 'Click to hear pronunciation',
-        onclick: () => playAudio(entry.romaji),
+        onclick: (ev) => { ev.stopPropagation(); playAudio(entry.romaji); },
       }, '▶  hear it'),
     );
+    // Clicking anywhere on the card (other than the audio button) highlights
+    // the kana on the bottom keyboard helper. Issue #1.
+    card.addEventListener('click', () => {
+      if (activeKeyboardApi) activeKeyboardApi.highlightKana(entry.kana);
+    });
+    card.style.cursor = 'pointer';
     return card;
   }
 
@@ -126,7 +141,7 @@
     const header = el('h3', null, label || 'Mini-drill');
     const progress = el('div', { class: 'drill-progress' });
     const promptGlyph = el('div', { class: 'prompt-glyph' });
-    const input = el('input', { type: 'text', autocomplete: 'off', placeholder: 'type the romaji…' });
+    const input = el('input', { type: 'text', autocomplete: 'off', placeholder: 'type romaji or kana…' });
     const feedback = el('div', { class: 'drill-feedback' });
     const playHint = el('button', { class: 'audio-btn', type: 'button' }, '▶  hear it');
 
@@ -156,13 +171,15 @@
       feedback.textContent = '';
       feedback.className = 'drill-feedback';
       playHint.onclick = () => playAudio(current.romaji);
+      // Highlight the kana on the bottom keyboard so Squibs can find the key
+      if (activeKeyboardApi) activeKeyboardApi.highlightKana(current.kana);
     }
 
     input.addEventListener('keydown', (ev) => {
       if (ev.key !== 'Enter') return;
       ev.preventDefault();
       const current = queue[i];
-      if (answerMatches(input.value, current.romaji)) {
+      if (answerMatches(input.value, current.romaji, current.kana)) {
         input.classList.add('correct');
         feedback.textContent = `✓ ${current.kana} = ${current.romaji}`;
         feedback.className = 'drill-feedback correct';
@@ -196,7 +213,7 @@
     const subhead = el('p', null, `${count} prompts. ${passing}/${count} to pass.`);
     const progress = el('div', { class: 'quiz-progress' });
     const promptGlyph = el('div', { class: 'prompt-glyph' });
-    const input = el('input', { type: 'text', autocomplete: 'off', placeholder: 'type the romaji…' });
+    const input = el('input', { type: 'text', autocomplete: 'off', placeholder: 'type romaji or kana…' });
     const feedback = el('div', { class: 'quiz-feedback' });
     const result = el('div');
 
@@ -239,13 +256,15 @@
       input.focus();
       feedback.textContent = '';
       feedback.className = 'quiz-feedback';
+      // Quiz also highlights the keyboard — same UX as the drill
+      if (activeKeyboardApi) activeKeyboardApi.highlightKana(current.kana);
     }
 
     input.addEventListener('keydown', (ev) => {
       if (ev.key !== 'Enter') return;
       ev.preventDefault();
       const current = queue[i];
-      if (answerMatches(input.value, current.romaji)) {
+      if (answerMatches(input.value, current.romaji, current.kana)) {
         input.classList.add('correct');
         feedback.textContent = '✓';
         feedback.className = 'quiz-feedback correct';
@@ -289,6 +308,123 @@
     }
     wrap.append(header, intro, grid);
     return wrap;
+  }
+
+  // ── KanaKeyboard widget (issue #1) ───────────────────────────────
+  // Sticky bottom panel showing the JIS kana layout. Highlights the keys
+  // for the most-recently-touched kana. Helps Squibs touch-type kana
+  // input as he learns the language.
+  //
+  // Depends on JIS_KANA_LAYOUT and kanaToKeySequence from keyboard-data.js.
+  // If the dependency isn't loaded (legacy lessons without the script tag),
+  // buildKeyboard() returns null and the lesson works without the helper.
+
+  let activeKeyboardApi = null;
+
+  function buildKeyboard() {
+    if (typeof JIS_KANA_LAYOUT === 'undefined' || typeof kanaToKeySequence !== 'function') {
+      return null;  // dependency not loaded — gracefully degrade
+    }
+
+    // Default: expanded on desktop, auto-collapse on small screens via JS.
+    const wrap = el('div', { class: 'kana-keyboard', id: 'kana-keyboard' });
+    if (window.matchMedia && window.matchMedia('(max-width: 540px)').matches) {
+      wrap.classList.add('collapsed');
+    }
+    const header = el('div', { class: 'kbd-header' },
+      el('span', { class: 'kbd-title' }, 'JIS kana keyboard'),
+      el('span', { class: 'kbd-caption', id: 'kbd-caption' }, 'click any kana above or run a drill — keys light up'),
+      el('button', { class: 'kbd-toggle', type: 'button', title: 'show / hide keyboard' }, 'hide'),
+    );
+    const body = el('div', { class: 'kbd-body' });
+    const keyEls = {};  // key string → DOM element
+
+    for (const row of JIS_KANA_LAYOUT.rows) {
+      const rowEl = el('div', { class: 'kbd-row' });
+      for (const k of row) {
+        const keyEl = el('button', {
+          class: 'kbd-key',
+          type: 'button',
+          'data-key': k.key,
+          title: k.shiftKana
+            ? `${k.kana}  (Shift: ${k.shiftKana})`
+            : (k.kana || k.label || k.key),
+        },
+          el('span', { class: 'kbd-key-label' }, k.key),
+          el('span', { class: 'kbd-key-kana' }, k.kana || ''),
+          k.shiftKana ? el('span', { class: 'kbd-key-kana-shift' }, k.shiftKana) : null,
+        );
+        // Clicking a key on the virtual keyboard highlights its kana — handy for
+        // exploring the layout independently of the lesson cards.
+        keyEl.addEventListener('click', () => {
+          if (k.kana) api.highlightKana(k.kana);
+        });
+        keyEls[k.key] = keyEl;
+        rowEl.appendChild(keyEl);
+      }
+      body.appendChild(rowEl);
+    }
+
+    wrap.append(header, body);
+
+    // Toggle behavior — initial state matches the class set above
+    let collapsed = wrap.classList.contains('collapsed');
+    const toggleBtn = header.querySelector('.kbd-toggle');
+    toggleBtn.textContent = collapsed ? 'show' : 'hide';
+    toggleBtn.addEventListener('click', () => {
+      collapsed = !collapsed;
+      wrap.classList.toggle('collapsed', collapsed);
+      toggleBtn.textContent = collapsed ? 'show' : 'hide';
+    });
+
+    const captionEl = header.querySelector('#kbd-caption');
+
+    const api = {
+      element: wrap,
+      highlightKana(kana) {
+        // Clear previous highlights
+        for (const el of wrap.querySelectorAll('.kbd-key.active, .kbd-key.shift-active')) {
+          el.classList.remove('active', 'shift-active');
+          const badge = el.querySelector('.kbd-seq-badge');
+          if (badge) badge.remove();
+        }
+        const seq = kanaToKeySequence(kana);
+        if (!seq || !seq.length) {
+          captionEl.textContent = `${kana} — no JIS mapping (rare combo, type via romaji)`;
+          return;
+        }
+        // Highlight each press in the sequence with a numbered badge
+        seq.forEach((press, idx) => {
+          const keyEl = keyEls[press.key];
+          if (!keyEl) return;
+          keyEl.classList.add('active');
+          if (press.shift) keyEl.classList.add('shift-active');
+          if (seq.length > 1) {
+            const badge = el('span', { class: 'kbd-seq-badge' }, String(idx + 1));
+            keyEl.appendChild(badge);
+          }
+        });
+        // Caption: human-readable sequence
+        if (seq.length === 1) {
+          captionEl.textContent = seq[0].shift
+            ? `${kana} — Shift + ${seq[0].key}`
+            : `${kana} — press ${seq[0].key}`;
+        } else {
+          const parts = seq.map((p, i) => `${i + 1}. ${p.shift ? 'Shift+' : ''}${p.key} (${p.label})`);
+          captionEl.textContent = `${kana} — ${parts.join('  →  ')}`;
+        }
+      },
+      clear() {
+        for (const el of wrap.querySelectorAll('.kbd-key.active, .kbd-key.shift-active')) {
+          el.classList.remove('active', 'shift-active');
+          const badge = el.querySelector('.kbd-seq-badge');
+          if (badge) badge.remove();
+        }
+        captionEl.textContent = 'click any kana above or run a drill — keys light up';
+      },
+    };
+
+    return api;
   }
 
   // ── Public API ───────────────────────────────────────────────────
@@ -370,6 +506,19 @@
         : el('span'),
       );
       root.appendChild(footer);
+
+      // Keyboard helper (sticky bottom panel) — issue #1
+      // Default-on. Can be hidden via the toggle button in its header.
+      // Renders only if keyboard-data.js is loaded.
+      if (config.keyboard !== false) {
+        const keyboard = buildKeyboard();
+        if (keyboard) {
+          activeKeyboardApi = keyboard;
+          document.body.appendChild(keyboard.element);
+          // Add bottom padding to body so the sticky keyboard doesn't cover content
+          document.body.classList.add('has-kana-keyboard');
+        }
+      }
     },
   };
 })();

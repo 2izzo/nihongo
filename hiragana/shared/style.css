@@ -380,9 +380,167 @@ button.primary:disabled { opacity: 0.45; cursor: not-allowed; }
 }
 .note strong { color: var(--warn); }
 
+/* ── KanaKeyboard widget (issue #1) ──────────────────────────── */
+body.has-kana-keyboard { padding-bottom: 250px; }
+
+.kana-keyboard {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: var(--surface);
+  border-top: 2px solid var(--line);
+  box-shadow: 0 -4px 16px rgba(0,0,0,0.08);
+  padding: 0.6rem 0.8rem 0.8rem;
+  font-family: var(--font-ui);
+  transition: transform 0.2s ease;
+}
+.kana-keyboard.collapsed {
+  transform: translateY(calc(100% - 38px));
+}
+.kana-keyboard.collapsed .kbd-body { opacity: 0.3; pointer-events: none; }
+
+.kbd-header {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+}
+.kbd-title {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+.kbd-caption {
+  flex: 1;
+  font-size: 0.85rem;
+  color: var(--ink);
+  font-family: var(--font-jp), var(--font-ui);
+  min-width: 0;
+}
+.kbd-toggle {
+  background: var(--surface-alt);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 0.25rem 0.7rem;
+  font-size: 0.78rem;
+  cursor: pointer;
+  font-family: var(--font-ui);
+  color: var(--ink-soft);
+}
+.kbd-toggle:hover { background: var(--accent-soft); border-color: var(--accent); color: var(--ink); }
+
+.kbd-body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: center;
+}
+.kbd-row {
+  display: flex;
+  gap: 4px;
+  justify-content: center;
+}
+/* Indent rows progressively (Q row, A row, Z row) like a real keyboard */
+.kbd-row:nth-child(2) { margin-left: 18px; }
+.kbd-row:nth-child(3) { margin-left: 30px; }
+.kbd-row:nth-child(4) { margin-left: 50px; }
+
+.kbd-key {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: var(--font-ui);
+  padding: 2px;
+  transition: background 0.12s, border-color 0.12s, transform 0.1s;
+  user-select: none;
+}
+.kbd-key:hover {
+  background: var(--surface-alt);
+  border-color: var(--ink-soft);
+}
+.kbd-key.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+  transform: translateY(-1px) scale(1.03);
+  box-shadow: 0 2px 8px rgba(194, 65, 12, 0.4);
+}
+.kbd-key.active.shift-active {
+  /* Shift-required key — slight different tint to signal "hold shift first" */
+  background: linear-gradient(135deg, var(--accent) 0%, #9a3412 100%);
+}
+
+.kbd-key-label {
+  font-size: 0.62rem;
+  color: var(--ink-faint);
+  font-weight: 600;
+  line-height: 1;
+}
+.kbd-key.active .kbd-key-label { color: rgba(255,255,255,0.75); }
+
+.kbd-key-kana {
+  font-family: var(--font-jp);
+  font-size: 1rem;
+  line-height: 1.1;
+  color: var(--ink);
+  font-weight: 500;
+}
+.kbd-key.active .kbd-key-kana { color: #fff; }
+
+.kbd-key-kana-shift {
+  position: absolute;
+  bottom: 1px;
+  right: 3px;
+  font-family: var(--font-jp);
+  font-size: 0.55rem;
+  color: var(--ink-faint);
+  line-height: 1;
+}
+.kbd-key.active .kbd-key-kana-shift { color: rgba(255,255,255,0.7); }
+
+.kbd-seq-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: var(--ink);
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 700;
+  border-radius: 999px;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
 /* ── Responsive tweaks ────────────────────────────────────────── */
 @media (max-width: 540px) {
   h1 { font-size: 1.5rem; }
   .kana-card .glyph { font-size: 2.6rem; }
   .container { padding: 1rem 0.7rem 3rem; }
+  /* Keyboard shrinks for phones */
+  body.has-kana-keyboard { padding-bottom: 220px; }
+  .kbd-key { width: 28px; height: 32px; }
+  .kbd-key-kana { font-size: 0.78rem; }
+  .kbd-key-label { font-size: 0.5rem; }
+  .kbd-key-kana-shift { font-size: 0.45rem; }
+  .kbd-row:nth-child(2) { margin-left: 10px; }
+  .kbd-row:nth-child(3) { margin-left: 16px; }
+  .kbd-row:nth-child(4) { margin-left: 28px; }
+  .kbd-caption { font-size: 0.78rem; }
 }
