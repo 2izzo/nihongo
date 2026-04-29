@@ -28,7 +28,7 @@ import { fileURLToPath } from 'node:url';
 // ─── CONFIG ──────────────────────────────────────────────────────────
 // Paste your ElevenLabs voice ID here. Browse https://elevenlabs.io/app/voice-library
 // for ja-JP-capable voices. Format looks like: '21m00Tcm4TlvDq8ikWAM'
-const VOICE_ID = '<PASTE_YOUR_ELEVENLABS_VOICE_ID_HERE>';
+const VOICE_ID = 'dhGvgIx0X6G3xzSWqOye';  // Kana — young female, standard accent, eleven_multilingual_v2-verified
 
 const MODEL_ID  = 'eleven_multilingual_v2';
 const STABILITY = 0.5;
@@ -124,7 +124,7 @@ async function generateOne({ kana, romaji }, key) {
 
 // ─── MAIN ────────────────────────────────────────────────────────────
 async function main() {
-  if (VOICE_ID === '<PASTE_YOUR_ELEVENLABS_VOICE_ID_HERE>') {
+  if (VOICE_ID === 'dhGvgIx0X6G3xzSWqOye') {
     die(`Set VOICE_ID at the top of scripts/generate-audio.mjs.\n` +
         `    Pick a ja-JP-capable voice at https://elevenlabs.io/app/voice-library`);
   }
