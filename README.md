@@ -10,7 +10,7 @@ Sister project to [2izzo/studio](https://github.com/2izzo/studio) (music theory)
 | # | Pack | Status | Lessons |
 |---|---|---|---|
 | 1 | **Hiragana** | shipped | 4 lessons · 104 kana · ~75 min total |
-| 2 | Katakana | planned | (same structure, different shapes) |
+| 2 | **Katakana** | shipped | 5 lessons · 104 katakana + ー and ッ · ~80 min · loanwords reading drill |
 | 3 | Particles & the Desu Box | planned | は, が, を, に, で, です |
 | 4 | Verbs Move | planned | る/う verbs, polite form, te-form, plain |
 
@@ -55,6 +55,7 @@ nihongo/
 ├── index.html                       ← repo landing
 ├── README.md
 ├── DEPLOY.md                        ← deployment instructions for Squibs
+├── audio-flags.md                   ← human-edited list for the audio quality loop
 ├── .gitignore
 ├── hiragana/                        ← Pack 1
 │   ├── index.html                   ← pack landing
@@ -66,10 +67,23 @@ nihongo/
 │   └── shared/
 │       ├── style.css
 │       ├── kana-data.js
-│       └── lesson-engine.js
+│       ├── keyboard-data.js
+│       └── lesson-engine.js         ← shared by both packs
+├── katakana/                        ← Pack 2
+│   ├── index.html                   ← pack landing
+│   ├── 01-vowels-and-k.html
+│   ├── 02-s-t-n.html
+│   ├── 03-h-m-y-r-w-n.html
+│   ├── 04-dakuten-yoon-quiz.html
+│   ├── 05-long-vowels-and-usage.html ← ー, ッ, when to use katakana, reading drill
+│   └── shared/
+│       └── katakana-data.js          ← Pack 2 references hiragana/audio/* for sound (same syllables)
 └── scripts/
-    └── generate-audio.mjs
+    ├── generate-audio.mjs
+    └── regen-flagged.mjs            ← regenerate just the kana listed in audio-flags.md
 ```
+
+**Audio reuse:** Pack 2 lessons set `audioPath: '../hiragana/audio/'` so katakana cards play the existing hiragana MP3s — カ and か are both pronounced "ka", so the sound is identical and there's no need to duplicate files.
 
 ## Architecture
 

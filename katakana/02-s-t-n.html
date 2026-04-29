@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 2: S, T, N rows · Pack 2 Katakana · 2izzo/nihongo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap">
+  <link rel="stylesheet" href="../hiragana/shared/style.css">
+</head>
+<body>
+  <main class="container" id="lesson-root"></main>
+
+  <script src="shared/katakana-data.js"></script>
+  <script src="../hiragana/shared/lesson-engine.js"></script>
+  <script>
+    const lesson2Kana = KATAKANA_DATA.filter(k => k.lesson === 2);
+
+    Lesson.init({
+      number: 2,
+      title: 'S, T, N rows',
+      pack: 'Pack 2 — Katakana',
+      audioPath: '../hiragana/audio/',
+      intro: 'Fifteen more katakana, all sharing vowel endings with what you learned in Lesson 1. Three irregulars to flag: シ (shi, not "si"), チ (chi, not "ti"), ツ (tsu, not "tu"). Same irregulars as hiragana — the spellings carry across.',
+      kana: lesson2Kana,
+      sections: [
+        {
+          title: 'The famous シ vs ツ trap',
+          html: '<p>These two katakana confuse even intermediate learners. The trick is the <strong>direction of the strokes</strong>:</p><ul><li><strong>シ (shi):</strong> short ticks slope <em>up</em>, the long stroke sweeps <em>up and to the right</em>.</li><li><strong>ツ (tsu):</strong> short ticks slope <em>down</em>, the long stroke sweeps <em>down and to the left</em>.</li></ul><p>If you think of シ as "shhh" with the strokes flowing forward like a finger to lips, and ツ as three downward drops (tsunamis), the muscle memory builds quickly.</p>',
+        },
+      ],
+      miniDrill: { count: 10, label: 'Quick drill (10 prompts)' },
+      quiz: {
+        count: 8,
+        passing: 6,
+        passMsg: 'S/T/N row done. The irregulars (シ, チ, ツ) are the same as hiragana — same Hepburn quirks. Lesson 3 finishes the base 46.',
+      },
+      prevLesson: '01-vowels-and-k.html',
+      nextLesson: '03-h-m-y-r-w-n.html',
+    });
+  </script>
+</body>
+</html>

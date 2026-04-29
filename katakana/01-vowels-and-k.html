@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 1: Vowels & K-row · Pack 2 Katakana · 2izzo/nihongo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap">
+  <link rel="stylesheet" href="../hiragana/shared/style.css">
+</head>
+<body>
+  <main class="container" id="lesson-root"></main>
+
+  <script src="shared/katakana-data.js"></script>
+  <script src="../hiragana/shared/lesson-engine.js"></script>
+  <script>
+    const lesson1Kana = KATAKANA_DATA.filter(k => k.lesson === 1);
+
+    Lesson.init({
+      number: 1,
+      title: 'Vowels & K-row',
+      pack: 'Pack 2 — Katakana',
+      audioPath: '../hiragana/audio/',
+      intro: 'Same five vowels, same K-row sounds — different (more angular) shapes. Most have intuitive English-letter associations: イ looks like "II", エ is a rotated "E", オ is close to "O". The audio reuses Pack 1\'s recordings since カ and か are both pronounced "ka."',
+      kana: lesson1Kana,
+      sections: [
+        {
+          title: 'Why two scripts?',
+          html: '<p>Hiragana and katakana spell the exact same syllables — they\'re two parallel scripts for one phonetic system. Hiragana is the default everyday script. Katakana is reserved for foreign loanwords (<strong>テレビ</strong> "terebi" = TV), foreign names (<strong>アメリカ</strong> "amerika" = America), onomatopoeia (<strong>ワンワン</strong> = woof-woof), scientific names, and emphasis (the way English uses italics). Walk into any 7-Eleven in Tokyo — half the product names are in katakana.</p>',
+        },
+      ],
+      miniDrill: { count: 8, label: 'Quick drill (8 prompts)' },
+      quiz: {
+        count: 5,
+        passing: 4,
+        passMsg: 'Vowels and K-row — done in katakana too. The skeleton of the syllabary is in place. Lesson 2 stacks S, T, and N rows on top.',
+      },
+      prevLesson: null,
+      nextLesson: '02-s-t-n.html',
+    });
+  </script>
+</body>
+</html>

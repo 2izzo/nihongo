@@ -90,17 +90,23 @@
   }
 
   // ── Audio ────────────────────────────────────────────────────────
-  // Static MP3s at audio/<romaji>.mp3. If the file isn't present yet
-  // (Squibs hasn't run generate-audio.mjs), the button is disabled with a tooltip.
+  // Static MP3s at <audioPath><romaji>.mp3. Default audioPath is 'audio/'
+  // (works for hiragana lessons living next to hiragana/audio/). Pack 2
+  // (katakana) sets audioPath: '../hiragana/audio/' to reuse the hiragana MP3s
+  // since they share the same romaji → same sound (カ and か are both 'ka').
+  // If the file isn't present, audioCache stores the broken Audio with a
+  // .dataset.failed = '1' marker — the button silently fails rather than erroring.
+  let currentAudioPath = 'audio/';
   const audioCache = {};
   function playAudio(romaji) {
-    if (!audioCache[romaji]) {
-      audioCache[romaji] = new Audio(`audio/${romaji}.mp3`);
-      audioCache[romaji].addEventListener('error', () => {
-        audioCache[romaji].dataset.failed = '1';
+    const cacheKey = currentAudioPath + romaji;
+    if (!audioCache[cacheKey]) {
+      audioCache[cacheKey] = new Audio(`${currentAudioPath}${romaji}.mp3`);
+      audioCache[cacheKey].addEventListener('error', () => {
+        audioCache[cacheKey].dataset.failed = '1';
       });
     }
-    const a = audioCache[romaji];
+    const a = audioCache[cacheKey];
     a.currentTime = 0;
     const playPromise = a.play();
     if (playPromise && playPromise.catch) playPromise.catch(() => {});
@@ -431,8 +437,10 @@
   window.Lesson = {
     /**
      * config: {
-     *   number: 1..4,
+     *   number: 1..N,
      *   title: 'Vowels & K-row',
+     *   pack: 'Pack 1 — Hiragana',  // shown in the header tag (defaults to Pack 1 for backwards compat)
+     *   audioPath: 'audio/',         // prefix for <romaji>.mp3 lookup (default 'audio/')
      *   intro: 'short intro paragraph',
      *   kana: KANA_DATA filtered to this lesson,
      *   miniDrill: { count: 8, label: 'Mini-drill (mix it up)' } | null,
@@ -450,10 +458,14 @@
         return;
       }
 
+      // Configure audio path (default 'audio/' for hiragana lessons; katakana
+      // lessons override to '../hiragana/audio/' to reuse the existing MP3s).
+      currentAudioPath = config.audioPath || 'audio/';
+
       // Header
       root.appendChild(el('div', { class: 'lesson-header' },
         el('div', null,
-          el('div', { class: 'pack-tag' }, 'Pack 1 — Hiragana'),
+          el('div', { class: 'pack-tag' }, config.pack || 'Pack 1 — Hiragana'),
           el('h1', null, `Lesson ${config.number}: ${config.title}`),
         ),
         el('a', { href: 'index.html' }, '← back to pack'),
@@ -464,9 +476,12 @@
         root.appendChild(el('p', { class: 'intro' }, config.intro));
       }
 
-      // Kana cards
-      root.appendChild(el('h2', null, 'The kana'));
-      root.appendChild(renderKanaGrid(config.kana));
+      // Kana cards — skip if config.kana is empty/null (Lesson 5 of Pack 2 is
+      // pure prose-and-examples, no per-character cards).
+      if (config.kana && config.kana.length) {
+        root.appendChild(el('h2', null, 'The kana'));
+        root.appendChild(renderKanaGrid(config.kana));
+      }
 
       // Inline sections (e.g., Lesson 2's "irregulars" callout, Lesson 3's を note)
       if (config.sections) {
@@ -520,5 +535,9 @@
         }
       }
     },
+
+    // Exposed for inline HTML in lesson sections (e.g., Lesson 4's yōon grid)
+    // that needs to play audio without re-implementing the path logic.
+    playAudio(romaji) { playAudio(romaji); },
   };
 })();

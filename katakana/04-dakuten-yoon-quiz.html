@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 4: Dakuten, Yōon & Final Quiz · Pack 2 Katakana · 2izzo/nihongo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap">
+  <link rel="stylesheet" href="../hiragana/shared/style.css">
+</head>
+<body>
+  <main class="container" id="lesson-root"></main>
+
+  <script src="shared/katakana-data.js"></script>
+  <script src="../hiragana/shared/lesson-engine.js"></script>
+  <script>
+    // Lesson 4 mirrors hiragana Lesson 4: dakuten/handakuten first, then yōon
+    // rendered inline, then a final quiz across all 104 katakana.
+    const dakutenKana = KATAKANA_DATA.filter(k => k.lesson === 4 && k.row !== 'yoon');
+    const yoonKana    = KATAKANA_DATA.filter(k => k.row === 'yoon');
+    const allKana     = KATAKANA_DATA;
+
+    Lesson.init({
+      number: 4,
+      title: 'Dakuten, Yōon & Final Quiz',
+      pack: 'Pack 2 — Katakana',
+      audioPath: '../hiragana/audio/',
+      intro: 'Same patterns as hiragana — the rules don\'t change between scripts, only the shapes. Dakuten (the small " mark) voices a consonant: カ → ガ, サ → ザ. Handakuten (the small ° mark, only on the H-row) turns H into P: ハ → パ. Yōon are combinations: a regular katakana plus a small ャ, ュ, or ョ — キ + ャ becomes キャ ("kya"), one syllable.',
+      kana: dakutenKana,
+      sections: [
+        {
+          title: 'Yōon — the small-y combinations',
+          html: '<p>Wherever you see a small ャ, ュ, or ョ tucked next to another katakana, treat them as one syllable. <strong>キョ</strong> is "kyo" (one beat), not "ki-yo" (two). The full set:</p>' + (function() {
+            // Inline render the yōon grid using Lesson.playAudio so the audio
+            // path config (../hiragana/audio/) is honored.
+            const cards = yoonKana.map(k => `
+              <div class="kana-card${k.irregular ? ' irregular' : ''}">
+                ${k.irregular ? '<span class="irregular-flag">irregular</span>' : ''}
+                <div class="glyph">${k.kana}</div>
+                <div class="romaji">${k.romaji}</div>
+                <div class="mnemonic">${k.mnemonic || ''}</div>
+                <button class="audio-btn" type="button" onclick="Lesson.playAudio('${k.romaji}')">▶  hear it</button>
+              </div>
+            `).join('');
+            return `<div class="kana-grid">${cards}</div>`;
+          })(),
+        },
+        {
+          title: 'Two katakana-specific tricks coming next',
+          html: '<div class="note">Hiragana taught you long vowels (おう = ō) and the small っ doubler (がっこう). Katakana handles both differently: it has its own <strong>long-vowel mark ー</strong> (used in コーヒー, ソニー, ニンテンドー) and the same <strong>small ッ</strong> doubler (サンドイッチ, パナソニック). Lesson 5 covers both — and explains <em>when</em> to reach for katakana in the wild.</div>',
+        },
+      ],
+      quizPool: allKana,
+      quiz: {
+        count: 12,
+        passing: 9,
+        passMsg: 'All 104 katakana — base, dakuten, yōon, irregulars — passed. Two scripts down. Lesson 5 ties it together with the long-vowel mark, the doubler, and the loanwords/proper nouns where katakana lives.',
+      },
+      prevLesson: '03-h-m-y-r-w-n.html',
+      nextLesson: '05-long-vowels-and-usage.html',
+    });
+  </script>
+</body>
+</html>

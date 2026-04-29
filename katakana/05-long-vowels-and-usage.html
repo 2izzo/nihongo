@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 5: Long Vowels, ッ & Usage · Pack 2 Katakana · 2izzo/nihongo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap">
+  <link rel="stylesheet" href="../hiragana/shared/style.css">
+</head>
+<body>
+  <main class="container" id="lesson-root"></main>
+
+  <script src="shared/katakana-data.js"></script>
+  <script src="../hiragana/shared/lesson-engine.js"></script>
+  <script>
+    // Lesson 5 has no kana grid — it's prose-and-examples. config.kana = []
+    // signals the engine to skip that section entirely. The reading drill
+    // (loanwords + proper nouns) is the practical test of everything in Pack 2.
+    Lesson.init({
+      number: 5,
+      title: 'Long Vowels, ッ & When to Use Katakana',
+      pack: 'Pack 2 — Katakana',
+      audioPath: '../hiragana/audio/',
+      intro: 'Two characters that aren\'t kana but are essential for reading katakana in the wild: the long-vowel mark ー (chōonpu) and the small ッ (sokuon, the consonant doubler). Plus a practical guide to when katakana is the right script — so you know what you\'re looking at when you walk down a Tokyo street.',
+      kana: [],  // no kana grid — pure prose lesson
+      sections: [
+        {
+          title: 'The long-vowel mark — ー (chōonpu)',
+          html: '<p>A horizontal bar that <strong>extends the previous vowel</strong>. Used <em>only</em> in katakana — hiragana doubles vowels with letters instead.</p>' +
+                '<ul>' +
+                '  <li><strong>コーヒー</strong> = ko + ー + hi + ー = "kōhī" (coffee). The ー stretches each vowel.</li>' +
+                '  <li><strong>ソニー</strong> = so + ni + ー = "sonī" (Sony). The ー elongates the "i" at the end.</li>' +
+                '  <li><strong>ニンテンドー</strong> = ni + n + te + n + do + ー = "nintendō" (Nintendo). The ー stretches the final "o".</li>' +
+                '</ul>' +
+                '<p>Compare to hiragana, which writes long vowels by doubling: <strong>おとうさん</strong> ("otōsan", father — the "u" elongates the "o"), <strong>おかあさん</strong> ("okāsan", mother — the second "a" elongates the first). Same effect, different convention. Hiragana stretches with letters; katakana stretches with the ー bar.</p>' +
+                '<div class="note"><strong>Why the difference?</strong> Katakana words are mostly foreign borrowings, where the long-vowel pronunciation matters but the original spelling has nothing useful. The ー mark is a clean way to say "hold this vowel" without committing to a particular kana.</div>',
+        },
+        {
+          title: 'The small ッ — sokuon, the consonant doubler',
+          html: '<p>Same as the small っ in hiragana — it doesn\'t make a sound by itself. It <strong>doubles the consonant</strong> of the next syllable, creating a brief glottal stop before that consonant fires.</p>' +
+                '<ul>' +
+                '  <li><strong>サンドイッチ</strong> = sa + n + do + i + ッ + chi = "sandoitchi" (sandwich). The ッ doubles the t — say "sandoit" then "chi" with a tiny pause between.</li>' +
+                '  <li><strong>パナソニック</strong> = pa + na + so + ni + ッ + ku = "panasonikku" (Panasonic). The ッ doubles the k.</li>' +
+                '  <li><strong>ベッド</strong> = be + ッ + do = "beddo" (bed). The ッ doubles the d.</li>' +
+                '</ul>' +
+                '<p>You already learned this exact rule in Hiragana Lesson 4 (がっこう = gakkō). Same rule, different shape: hiragana uses っ, katakana uses ッ.</p>',
+        },
+        {
+          title: 'When to use katakana',
+          html: '<p>Five reliable signals that a word should be written in katakana:</p>' +
+                '<ol>' +
+                '  <li><strong>Foreign loanwords</strong> — anything imported into Japanese from another language. テレビ (TV), コーヒー (coffee), ピザ (pizza), アイスクリーム (ice cream). The vast majority of katakana you encounter falls here.</li>' +
+                '  <li><strong>Foreign proper nouns</strong> — places, people, brands, bands. アメリカ (America), トーマス (Thomas), マクドナルド (McDonald\'s).</li>' +
+                '  <li><strong>Onomatopoeia and sound effects</strong> — especially in manga. ワンワン (woof-woof), ドキドキ (heartbeat thumping), キラキラ (sparkling).</li>' +
+                '  <li><strong>Scientific names</strong> — animals, plants, technical terms in biology / chemistry contexts. ネコ (cat, scientific) vs 猫 (cat, everyday kanji).</li>' +
+                '  <li><strong>Emphasis</strong> — Japanese doesn\'t have italics, so katakana is sometimes used like italics in English. ヤバイ (yabai, "dangerous/awesome" — written in katakana for emphasis).</li>' +
+                '</ol>' +
+                '<p>If you\'re reading something in Japan and you see a katakana word, the odds are very high it\'s a loanword. Sounding it out phonetically in Japanese will often reveal a familiar English word underneath.</p>',
+        },
+      ],
+      readingDrill: KATAKANA_READING_DRILL,
+      prevLesson: '04-dakuten-yoon-quiz.html',
+      nextLesson: 'index.html',
+    });
+  </script>
+</body>
+</html>

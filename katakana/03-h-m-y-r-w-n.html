@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 3: H/M/Y/R/W + ン · Pack 2 Katakana · 2izzo/nihongo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap">
+  <link rel="stylesheet" href="../hiragana/shared/style.css">
+</head>
+<body>
+  <main class="container" id="lesson-root"></main>
+
+  <script src="shared/katakana-data.js"></script>
+  <script src="../hiragana/shared/lesson-engine.js"></script>
+  <script>
+    const lesson3Kana = KATAKANA_DATA.filter(k => k.lesson === 3);
+
+    Lesson.init({
+      number: 3,
+      title: 'H/M/Y/R/W rows + ン',
+      pack: 'Pack 2 — Katakana',
+      audioPath: '../hiragana/audio/',
+      intro: 'The remaining 21 katakana to complete the base 46. Same vowel pattern as before. Two irregulars worth flagging: フ (fu, not "hu") matching hiragana ふ, and ヲ (wo) — almost never seen in modern Japanese (hiragana を is what you actually read).',
+      kana: lesson3Kana,
+      sections: [
+        {
+          title: 'The other famous trap: ソ vs ン',
+          html: '<p>If シ vs ツ was the first trap (Lesson 2), <strong>ソ vs ン</strong> is the second:</p><ul><li><strong>ソ (so):</strong> two strokes — a small dab and a long sweep — both leaning <em>right</em>. The long stroke goes top-to-bottom-left.</li><li><strong>ン (n):</strong> two strokes leaning <em>left</em>. The long stroke goes bottom-to-top-right.</li></ul><p>Think: ソ is "so" with the strokes saying "so it goes" (forward-leaning). ン is "n" — a final, closing stroke that arcs back. They\'re mirror images.</p>',
+        },
+        {
+          title: 'A note on ヘ',
+          html: '<p>Katakana <strong>ヘ</strong> and hiragana <strong>へ</strong> are <em>visually identical</em> in most fonts — a flat hill. Same shape, both read "he" (or "e" when used as a particle). This is the single character where the two scripts collapse into one glyph. Free win.</p>',
+        },
+      ],
+      miniDrill: { count: 12, label: 'Quick drill (12 prompts)' },
+      quiz: {
+        count: 10,
+        passing: 7,
+        passMsg: 'All 46 base katakana done. The two famous traps (シ/ツ, ソ/ン) are now wired into your visual memory. Lesson 4 layers on dakuten, handakuten, and yōon — same patterns as hiragana.',
+      },
+      prevLesson: '02-s-t-n.html',
+      nextLesson: '04-dakuten-yoon-quiz.html',
+    });
+  </script>
+</body>
+</html>
