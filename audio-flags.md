@@ -24,7 +24,7 @@ The script only needs the romaji at the start of the line — the reason and
 attribution are notes for us.
 
 ## Flagged
-- a — muddled, sounds clipped (Squibs, 2026-04-29)
+(empty — add new entries here as you and Atticus listen)
 
 ## Resolved
-(empty — move resolved flags here as we work through them)
+- a — muddled, sounds clipped → fixed via text+"。" / stability 0.4 / similarity 0.85 (Squibs, 2026-04-29)
